@@ -140,12 +140,9 @@ readme_content = f"""# Daily 🌎 Image
 ## Things to improve
 
 - NASA updates some day's photos more than a day after, so need to account for latency. 
-- Solved by saving and pulling from API photos history.
+- Satellite damage and having backups to pull from in the event it goes down.
+- These were solved by saving and pulling from API photos history.
 
-## Satellite damage
-
-- The satellite that takes these pictures is damaged as of July 15th.
-- NASA is working on fixing it.
 
 _Last updated: {datetime.now(timezone.utc).strftime('%a %b %d %H:%M:%S UTC %Y')}_
 """
