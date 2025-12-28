@@ -1,0 +1,41 @@
+name: Daily Automation
+
+on:
+  schedule:
+    - cron: '0 13 * * *'  # 9 AM EST
+  workflow_dispatch:
+
+jobs:
+  update-daily-image:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Run script to update image and README
+        env:
+          NASA_API_KEY: ${{ secrets.NASA_API_KEY }}
+        run: |
+          echo "✅ Running epic_daily.py..."
+          python scripts/epic_daily.py
+
+      - name: Commit and push if changes
+        run: |
+          git config user.name "Anish Nandamuri"
+          git config user.email "anish.nandamuri06@gmail.com"
+          git pull --rebase --autostash
+          git add .
+          git diff --quiet && git diff --staged --quiet || git commit -m "daily commit: $(date -u +'%Y-%m-%d')"
+          git push
+
